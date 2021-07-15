@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Payment;
@@ -43,4 +44,19 @@ public class PaymentService {
 	public Payment getById(int id) {
 		return this.repo.findById(id).orElseThrow(() -> new NoSuchElementException("Element with that Id is not available"));
 	}
+	
+	public List<Payment> getByDescription(String srchString){
+		return this.repo.findByDescriptionEquals(srchString);
+	}
+	
+	public List<Payment> getByAmountGreaterThan(double amount){
+		return this.repo.findByAmountGreaterThan(amount);
+	}
+	
+	public ResponseEntity<String> updateAmount(int txnId,double amount){
+		int rowsUpdated=this.repo.updateAmount(amount,txnId);
+		return ResponseEntity.ok().body(rowsUpdated+" Rows Updated!");
+	}
+	
+	
 }
